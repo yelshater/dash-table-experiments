@@ -28,6 +28,7 @@
     "builder": "3.2.2",
     "dash-components-archetype": "^0.2.7",
     "fast-isnumeric": "^1.1.1",
+    "hashmap-prop-type": "^1.0.4",
     "prop-types": "^15.5.9",
     "ramda": "^0.24.1",
     "react": "^15.5.4",

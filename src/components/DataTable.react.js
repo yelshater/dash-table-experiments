@@ -7,6 +7,7 @@ import filterRows from '../data/filter';
 import sortRows from '../data/sort';
 import filterIndices from '../data/find';
 
+
 const MUTABLE_PROPS = [
     'selected_row_indices',
     'rows',
@@ -14,6 +15,23 @@ const MUTABLE_PROPS = [
     'sortColumn',
     'sortDirection'
 ];
+
+class PercentCompleteFormatter extends React.Component {
+  static get propTypes(){
+    return  {
+        value: PropTypes.number.isRequired
+    }
+  };
+  render() {
+    const percentComplete = this.props.value+ '%';
+    return (
+      <div className="progress" style={{marginTop: '20px'}}>
+        <div className="progress-bar" role="progressbar" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100" style={{width: percentComplete}}>
+          {percentComplete}
+        </div>
+      </div>);
+  }
+}
 
 class DataTable extends Component {
     constructor(props) {
@@ -96,6 +114,17 @@ class DataTable extends Component {
             });
         }
 
+        //console.log(props.progress_bar_columns['u'])
+        console.log(newState.columns.length)
+        for (var i =0 ; i< newState.columns.length;i++) {
+            if (props.progress_bar_columns[newState.columns[i].key] > 0) {
+                newState.columns[i].formatter =PercentCompleteFormatter
+            }
+        }
+        
+        //newState.columns[1].formatter = PercentCompleteFormatter
+        console.log(newState.columns);
+        
         this.setState(newState);
     }
 
@@ -222,7 +251,6 @@ class DataTable extends Component {
                             DataTable.defaultProps.row_height);
         const {filterable} = this.props;
         const nRows = this.getSize();
-
         if (R.has('max_rows_in_viewport', this.props) ||
                 !R.has('min_height', this.props)) {
             const headerHeight = row_height;
@@ -288,9 +316,11 @@ class DataTable extends Component {
             sortable,
             tab_index
         } = this.props;
-
+        
         const {columns, selected_row_indices} = this.state;
-
+        
+        
+        console.log(columns[1])
         const extraProps = {};
         if (sortable) {
             extraProps.onGridSort = this.handleGridSort;
@@ -385,9 +415,19 @@ DataTable.propTypes = {
      * a custom order for your columns.
      */
     columns: PropTypes.arrayOf(PropTypes.string),
-
     row_selectable: PropTypes.bool,
     selected_row_indices: PropTypes.array,
+
+    /**
+     * Various properties of columns (e.g. progress bar column with min and max value)
+     */
+
+     progress_bar_columns: React.PropTypes.arrayOf(
+        React.PropTypes.shape({
+            columnName: React.PropTypes.string.isRequired,
+            maxValue: React.PropTypes.number
+        })
+    ),
 
     // These props are passed directly into the component
     enable_drag_and_drop: PropTypes.bool,

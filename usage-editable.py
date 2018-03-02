@@ -10,14 +10,18 @@ import plotly
 app = dash.Dash()
 
 app.scripts.config.serve_locally = True
-
+app.config['suppress_callback_exceptions']=True
+#app.css.config.serve_locally = True
 
 DF_SIMPLE = pd.DataFrame({
     'x': ['A', 'B', 'C', 'D', 'E', 'F'],
-    'y': [4, 3, 1, 2, 3, 6],
-    'z': ['a', 'b', 'c', 'a', 'b', 'c']
+    'y': [40, 30, 10, 20, 30, 60],
+    'z': [100, 10, 20, 30, 100, 30]
 })
 
+progress_bar_map = dict()
+progress_bar_map['y'] = 100
+progress_bar_map['z'] = 100
 
 app.layout = html.Div([
     html.H4('Editable DataTable'),
@@ -26,23 +30,11 @@ app.layout = html.Div([
 
         # optional - sets the order of columns
         columns=sorted(DF_SIMPLE.columns),
-
+        progress_bar_columns=progress_bar_map,
         editable=True,
 
         id='editable-table'
     ),
-    html.Div([
-        html.Pre(id='output', className='two columns'),
-        html.Div(
-            dcc.Graph(
-                id='graph',
-                style={
-                    'overflow-x': 'wordwrap'
-                }
-            ),
-            className='ten columns'
-        )
-    ], className='row')
 ], className='container')
 
 
@@ -68,10 +60,16 @@ def update_figure(rows):
         }
     }
 
-
 app.css.append_css({
     'external_url': 'https://codepen.io/chriddyp/pen/bWLwgP.css'
 })
+
+app.css.append_css({
+    'external_url': 'https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css'
+})
+
+
+
 
 if __name__ == '__main__':
     app.run_server(debug=True)

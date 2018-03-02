@@ -1,6 +1,7 @@
 {
   "src/components/DataTable.react.js": {
     "description": "",
+    "displayName": "DataTable",
     "methods": [
       {
         "name": "propsToState",
@@ -229,6 +230,26 @@
           "computed": false
         }
       },
+      "progress_bar_columns": {
+        "type": {
+          "name": "arrayOf",
+          "value": {
+            "name": "shape",
+            "value": {
+              "columnName": {
+                "name": "string",
+                "required": true
+              },
+              "maxValue": {
+                "name": "number",
+                "required": false
+              }
+            }
+          }
+        },
+        "required": false,
+        "description": "Various properties of columns (e.g. progress bar column with min and max value)"
+      },
       "enable_drag_and_drop": {
         "type": {
           "name": "bool"
@@ -361,6 +382,7 @@
   },
   "src/components/EditableTable.react.js": {
     "description": "",
+    "displayName": "EditableTable",
     "methods": [],
     "props": {
       "id": {
@@ -470,6 +492,7 @@
   },
   "src/components/VirtualizedTable.react.js": {
     "description": "",
+    "displayName": "VirtualizedTable",
     "methods": [
       {
         "name": "cellRenderer",
